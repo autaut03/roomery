@@ -1,0 +1,6 @@
+{
+  "parent": "roomery:block/room_holder",
+  "textures": {
+    "front": "roomery:blocks/room_holder_front_active"
+  }
+}
