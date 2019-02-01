@@ -19,7 +19,7 @@ import net.minecraft.world.chunk.Chunk;
 
 import javax.annotation.Nullable;
 
-public class RoomHolderBlock extends BlockBase {
+public class RoomHolderBlock extends Block {
     public static final String NAME = "room_holder";
 
     public static final PropertyDirection FACING = PropertyDirection.create("facing");
@@ -30,7 +30,7 @@ public class RoomHolderBlock extends BlockBase {
 
         setHardness(2);
         setRegistryName(Roomery.MOD_ID, NAME);
-        setTranslationKey(NAME);
+        setTranslationKey(getRegistryName().toString());
         setDefaultState(getBlockState().getBaseState()
                 .withProperty(FACING, EnumFacing.NORTH)
                 .withProperty(ACTIVE, false)
