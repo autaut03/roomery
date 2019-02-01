@@ -31,14 +31,14 @@ public class RoomHolderBlock extends Block {
         setHardness(2);
         setRegistryName(Roomery.MOD_ID, NAME);
         setTranslationKey(getRegistryName().toString());
-        setDefaultState(getBlockState().getBaseState()
+        setDefaultState(blockState.getBaseState()
                 .withProperty(FACING, EnumFacing.NORTH)
                 .withProperty(ACTIVE, false)
         );
     }
 
     @Override
-    public BlockStateContainer getBlockState() {
+    protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, FACING, ACTIVE);
     }
 
