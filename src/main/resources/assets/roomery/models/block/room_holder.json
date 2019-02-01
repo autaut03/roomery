@@ -1,9 +1,9 @@
 {
   "parent": "block/block",
   "textures": {
-    "side": "roomery:blocks/room_holder_side",
-    "front": "roomery:blocks/room_holder_front",
-    "particle": "roomery:blocks/room_holder_front"
+    "side": "roomery:block/room_holder_side",
+    "front": "roomery:block/room_holder_front",
+    "particle": "roomery:block/room_holder_front"
   },
   "elements": [
     {
