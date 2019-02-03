@@ -9,7 +9,7 @@ public class RoomCardItem extends Item {
     public RoomCardItem() {
         super();
 
-        setMaxStackSize(1);
+        setMaxStackSize(16);
         setRegistryName(Roomery.MOD_ID, NAME);
         setTranslationKey(getRegistryName().toString());
     }
