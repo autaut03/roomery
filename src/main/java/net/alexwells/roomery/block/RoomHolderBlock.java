@@ -1,7 +1,10 @@
 package net.alexwells.roomery.block;
 
 import net.alexwells.roomery.Roomery;
+import net.alexwells.roomery.gui.GuiEnum;
 import net.alexwells.roomery.tile.RoomHolderTileEntity;
+import net.alexwells.roomery.util.GuiUtils;
+import net.alexwells.roomery.util.WorldUtils;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -9,10 +12,13 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ChunkCache;
 import net.minecraft.world.IBlockAccess;
@@ -25,6 +31,7 @@ public class RoomHolderBlock extends Block {
     public static final String NAME = "room_holder";
 
     public static final PropertyDirection FACING = PropertyDirection.create("facing");
+    // Changed from RoomHolderTileEntity
     public static final PropertyBool ACTIVE = PropertyBool.create("active");
 
     public RoomHolderBlock() {
@@ -55,20 +62,11 @@ public class RoomHolderBlock extends Block {
     }
 
     @Override
-    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
+    public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos)
     {
-        TileEntity tileEntity = worldIn instanceof ChunkCache
-                ? ((ChunkCache)worldIn).getTileEntity(pos, Chunk.EnumCreateEntityType.CHECK)
-                : worldIn.getTileEntity(pos);
+        RoomHolderTileEntity tile = WorldUtils.getTileEntity(world, pos);
 
-        if (!(tileEntity instanceof RoomHolderTileEntity)) {
-            return state.withProperty(ACTIVE, false);
-        }
-
-        RoomHolderTileEntity tileRoomHolder = (RoomHolderTileEntity) tileEntity;
-        Item item = tileRoomHolder.getRoomCard();
-
-        return state.withProperty(ACTIVE, item != null);
+        return state.withProperty(ACTIVE, tile != null && tile.isActive());
     }
 
     @Override
@@ -83,7 +81,48 @@ public class RoomHolderBlock extends Block {
 
     @Nullable
     @Override
-    public TileEntity createTileEntity(World p_createTileEntity_1_, IBlockState p_createTileEntity_2_) {
+    public TileEntity createTileEntity(World world, IBlockState state) {
         return new RoomHolderTileEntity();
+    }
+
+    @Override
+    public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+        super.getDrops(drops, world, pos, state, fortune);
+
+        RoomHolderTileEntity tile = WorldUtils.getTileEntity(world, pos);
+
+        if(tile == null || tile.getRoomCard() == null) {
+            return;
+        }
+
+        drops.add(tile.getRoomCard());
+    }
+
+    @Override
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        // If sneaking, let the block be placed
+        if(player.isSneaking()) {
+            return false;
+        }
+
+        // If world is client sided, don't place a block
+        if(world.isRemote) {
+            return true;
+        }
+
+        RoomHolderTileEntity tile = WorldUtils.getTileEntity(world, pos);
+
+        if(tile == null) {
+            return false;
+        }
+
+        GuiUtils.openGui(player, GuiEnum.ROOM_HOLDER, world, pos);
+
+        return true;
+    }
+
+    @Override
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+        super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
     }
 }
