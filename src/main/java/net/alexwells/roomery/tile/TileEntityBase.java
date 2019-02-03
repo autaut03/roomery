@@ -6,21 +6,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ITickable;
 
-public class TileEntityBase extends TileEntity implements ITickable {
-    private static final int UPDATE_INTERVAL_TICKS = 20;
-
-    private boolean shouldUpdate = false;
-    private int ticksSinceUpdate = 0;
-
-    /**
-     * This will send an update packet on next update interval.
-     */
-    protected void markForPacketUpdate() {
-        shouldUpdate = true;
-    }
-
+public class TileEntityBase extends TileEntity {
     protected void sendUpdatePacket() {
         if(world.isRemote) {
             return;
@@ -60,21 +47,5 @@ public class TileEntityBase extends TileEntity implements ITickable {
         readFromNBT(pkt.getNbtCompound());
 
         world.markBlockRangeForRenderUpdate(pos, pos);
-    }
-
-    @Override
-    public void update() {
-        /*if(world.isRemote) {
-            return;
-        }
-
-        ticksSinceUpdate++;
-        if (ticksSinceUpdate > UPDATE_INTERVAL_TICKS) {
-            if (shouldUpdate) {
-                sendUpdatePacket();
-                shouldUpdate = false;
-            }
-            ticksSinceUpdate = 0;
-        }*/
     }
 }
