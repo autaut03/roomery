@@ -1,6 +1,6 @@
-package net.alexwells.roomery.gui.container;
+package net.alexwells.roomery.mechanic.roomholder;
 
-import net.alexwells.roomery.tile.RoomHolderTileEntity;
+import net.alexwells.roomery.gui.ContainerBase;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraftforge.items.SlotItemHandler;
 

@@ -1,7 +1,7 @@
 package net.alexwells.roomery.holder;
 
 import net.alexwells.roomery.Roomery;
-import net.alexwells.roomery.block.RoomHolderBlock;
+import net.alexwells.roomery.mechanic.roomholder.RoomHolderBlock;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 @GameRegistry.ObjectHolder(Roomery.MOD_ID)

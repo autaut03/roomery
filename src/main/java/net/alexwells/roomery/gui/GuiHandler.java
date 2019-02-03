@@ -1,7 +1,7 @@
 package net.alexwells.roomery.gui;
 
-import net.alexwells.roomery.gui.client.RoomHolderGui;
-import net.alexwells.roomery.gui.container.RoomHolderContainer;
+import net.alexwells.roomery.mechanic.roomholder.RoomHolderGui;
+import net.alexwells.roomery.mechanic.roomholder.RoomHolderContainer;
 import net.alexwells.roomery.util.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;

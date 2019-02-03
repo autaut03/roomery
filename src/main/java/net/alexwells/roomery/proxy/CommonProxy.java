@@ -1,10 +1,10 @@
 package net.alexwells.roomery.proxy;
 
 import net.alexwells.roomery.Roomery;
-import net.alexwells.roomery.block.RoomHolderBlock;
+import net.alexwells.roomery.mechanic.roomholder.RoomHolderBlock;
 import net.alexwells.roomery.holder.BlockHolder;
-import net.alexwells.roomery.item.RoomCardItem;
-import net.alexwells.roomery.tile.RoomHolderTileEntity;
+import net.alexwells.roomery.mechanic.roomcard.RoomCardItem;
+import net.alexwells.roomery.mechanic.roomholder.RoomHolderTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;

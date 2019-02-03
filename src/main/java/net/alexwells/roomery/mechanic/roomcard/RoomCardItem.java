@@ -1,4 +1,4 @@
-package net.alexwells.roomery.item;
+package net.alexwells.roomery.mechanic.roomcard;
 
 import net.alexwells.roomery.Roomery;
 import net.minecraft.item.Item;

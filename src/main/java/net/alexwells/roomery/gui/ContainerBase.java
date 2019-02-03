@@ -1,4 +1,4 @@
-package net.alexwells.roomery.gui.container;
+package net.alexwells.roomery.gui;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -18,7 +18,7 @@ public abstract class ContainerBase extends Container {
     private final int height;
     private boolean hasPlayerSlots = false;
 
-    ContainerBase(int width, int height)
+    public ContainerBase(int width, int height)
     {
         this.width = Math.max(width, MINIMAL_INVENTORY_WIDTH);
         this.height = height;
