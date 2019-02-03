@@ -3,7 +3,7 @@
   "textures": {
     "side": "roomery:block/room_holder_side",
     "front": "roomery:block/room_holder_front",
-    "particle": "roomery:block/room_holder_front"
+    "particle": "roomery:block/room_holder_side"
   },
   "elements": [
     {
