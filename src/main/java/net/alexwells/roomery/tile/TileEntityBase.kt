@@ -22,9 +22,7 @@ abstract class TileEntityBase : TileEntity() {
         }
     }
 
-    protected open fun useDefaultUpdatePacket(): Boolean {
-        return false
-    }
+    protected open fun useDefaultUpdatePacket() = false
 
     override fun getUpdatePacket(): SPacketUpdateTileEntity? {
         if (!useDefaultUpdatePacket()) {

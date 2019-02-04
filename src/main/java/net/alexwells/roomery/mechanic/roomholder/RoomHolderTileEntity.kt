@@ -17,9 +17,6 @@ class RoomHolderTileEntity : TileEntityBase(), ICapabilityProvider {
     val roomCard: ItemStack?
         get() = itemHandler.getStackInSlot(ROOM_CARD_SLOT)
 
-    val isActive: Boolean
-        get() = hasValidRoomCard()
-
     init {
         this.itemHandler = object : ItemStackHandler(1) {
             override fun onContentsChanged(slot: Int) {
@@ -35,33 +32,27 @@ class RoomHolderTileEntity : TileEntityBase(), ICapabilityProvider {
                 return if (!isItemValid(slot, stack)) {
                     stack
                 } else super.insertItem(slot, stack, simulate)
-
             }
 
             override fun isItemValid(slot: Int, stack: ItemStack): Boolean {
                 return if (slot == ROOM_CARD_SLOT && stack.item is RoomCardItem) {
                     true
-                    //return stack.
                 } else super.isItemValid(slot, stack)
-
             }
 
             override fun getSlotLimit(slot: Int): Int {
                 return if (slot == ROOM_CARD_SLOT) {
                     1
                 } else super.getSlotLimit(slot)
-
             }
         }
     }
 
-    override fun useDefaultUpdatePacket(): Boolean {
-        return true
-    }
+    fun isActive() = hasValidRoomCard()
 
-    private fun hasValidRoomCard(): Boolean {
-        return roomCard!!.item is RoomCardItem
-    }
+    override fun useDefaultUpdatePacket() = true
+
+    private fun hasValidRoomCard() = roomCard?.item is RoomCardItem
 
     override fun readFromNBT(compound: NBTTagCompound) {
         this.itemHandler.deserializeNBT(compound.getCompoundTag(ITEM_HANDLER_TAG))
@@ -79,14 +70,12 @@ class RoomHolderTileEntity : TileEntityBase(), ICapabilityProvider {
         return if (capability === CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             true
         } else super.hasCapability(capability, facing)
-
     }
 
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
         return if (capability === CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             this.itemHandler as T
         } else super.getCapability(capability, facing)
-
     }
 
     companion object {

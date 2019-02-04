@@ -8,11 +8,12 @@ import net.minecraft.entity.player.InventoryPlayer
 import net.minecraft.util.ResourceLocation
 
 class RoomHolderGui(
-        /** The player inventory bound to this GUI.  */
-        private val playerInventory: InventoryPlayer, private val tile: RoomHolderTileEntity) : GuiContainer(RoomHolderContainer(playerInventory, tile)) {
+        private val playerInventory: InventoryPlayer,
+        tile: RoomHolderTileEntity
+) : GuiContainer(RoomHolderContainer(playerInventory, tile)) {
+    private val GUI_TEXTURE = ResourceLocation(MOD_ID, "textures/gui/container/room_holder.png")
 
     init {
-
         this.allowUserInput = false
         this.ySize = 114 + 6 * 18
     }
@@ -45,11 +46,5 @@ class RoomHolderGui(
         // Draw background GUI
         this.mc.textureManager.bindTexture(GUI_TEXTURE)
         this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize)
-
-
-    }
-
-    companion object {
-        private val GUI_TEXTURE = ResourceLocation(MOD_ID, "textures/gui/container/room_holder.png")
     }
 }

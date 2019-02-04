@@ -28,18 +28,14 @@ object Roomery {
     @SidedProxy(clientSide = "net.alexwells.roomery.proxy.ClientProxy", serverSide = "net.alexwells.roomery.proxy.ServerProxy")
     lateinit var proxy: CommonProxy
 
-    lateinit var creativeTab: CreativeTabs
+    val creativeTab = object : CreativeTabs(MOD_ID) {
+        override fun createIcon() = ItemStack(RoomCardItem)
+    }
 
     @Mod.EventHandler
     fun preInit(event: FMLPreInitializationEvent) {
         MinecraftForge.EVENT_BUS.register(proxy)
 
         NetworkRegistry.INSTANCE.registerGuiHandler(this, GuiHandler())
-
-        creativeTab = object : CreativeTabs(MOD_ID) {
-            override fun createIcon(): ItemStack {
-                return ItemStack(RoomCardItem)
-            }
-        }
     }
 }

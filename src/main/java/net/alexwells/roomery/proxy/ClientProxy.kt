@@ -11,8 +11,12 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 class ClientProxy : CommonProxy() {
     @SubscribeEvent
     fun registerModels(event: ModelRegistryEvent) {
-        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(RoomHolderBlock), 0, ModelResourceLocation(RoomHolderBlock.registryName!!, "inventory"))
+        addItemModel(RoomCardItem)
 
-        ModelLoader.setCustomModelResourceLocation(RoomCardItem, 0, ModelResourceLocation(RoomCardItem.registryName!!, "inventory"))
+        addItemModel(Item.getItemFromBlock(RoomHolderBlock))
+    }
+
+    private fun addItemModel(item: Item) {
+        ModelLoader.setCustomModelResourceLocation(item, 0, ModelResourceLocation(item.registryName!!, "inventory"))
     }
 }

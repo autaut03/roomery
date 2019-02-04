@@ -11,11 +11,10 @@ import net.minecraft.inventory.Slot
 import net.minecraft.item.ItemStack
 
 abstract class ContainerBase(width: Int, private val height: Int) : Container() {
-
     private val width: Int = Math.max(width, MINIMAL_INVENTORY_WIDTH)
     private var hasPlayerSlots = false
 
-    protected val lastNonPlayerInvIndex: Int
+    private val lastNonPlayerInvIndex: Int
         get() = inventorySlots.size - if (hasPlayerSlots) 36 else 0
 
     protected fun addPlayerInventorySlots(playerInventory: InventoryPlayer) {
@@ -79,7 +78,5 @@ abstract class ContainerBase(width: Int, private val height: Int) : Container() 
         } else mergeItemStack(stack, 0, invBase, false)
     }
 
-    override fun canInteractWith(player: EntityPlayer): Boolean {
-        return !player.isSpectator
-    }
+    override fun canInteractWith(player: EntityPlayer) = !player.isSpectator
 }
