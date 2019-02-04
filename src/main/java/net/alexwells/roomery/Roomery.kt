@@ -18,6 +18,7 @@ import net.minecraftforge.fml.common.network.NetworkRegistry
         modid = MOD_ID,
         name = NAME,
         version = VERSION,
+        modLanguage = "kotlin",
         modLanguageAdapter = "net.shadowfacts.forgelin.KotlinAdapter",
         dependencies = "required-before:forgelin@1.8.2"
 )
