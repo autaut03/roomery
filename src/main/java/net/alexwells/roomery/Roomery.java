@@ -1,7 +1,10 @@
 package net.alexwells.roomery;
 
 import net.alexwells.roomery.gui.GuiHandler;
+import net.alexwells.roomery.holder.ItemHolder;
 import net.alexwells.roomery.proxy.CommonProxy;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -20,6 +23,7 @@ public class Roomery
     public static CommonProxy proxy;
 
     private static Roomery instance;
+    private CreativeTabs creativeTab;
 
     public Roomery() {
         instance = this;
@@ -31,9 +35,20 @@ public class Roomery
         MinecraftForge.EVENT_BUS.register(proxy);
 
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
+
+        creativeTab = new CreativeTabs(MOD_ID) {
+            @Override
+            public ItemStack createIcon() {
+                return new ItemStack(ItemHolder.roomCard);
+            }
+        };
     }
 
     public static Roomery instance() {
         return instance;
+    }
+
+    public CreativeTabs creativeTab() {
+        return creativeTab;
     }
 }

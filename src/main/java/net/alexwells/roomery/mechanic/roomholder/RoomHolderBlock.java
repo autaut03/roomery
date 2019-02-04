@@ -27,7 +27,6 @@ public class RoomHolderBlock extends Block {
     public static final String NAME = "room_holder";
 
     public static final PropertyDirection FACING = PropertyDirection.create("facing");
-    // Changed from RoomHolderTileEntity
     public static final PropertyBool ACTIVE = PropertyBool.create("active");
 
     public RoomHolderBlock() {
@@ -36,6 +35,7 @@ public class RoomHolderBlock extends Block {
         setHardness(2);
         setRegistryName(Roomery.MOD_ID, NAME);
         setTranslationKey(getRegistryName().toString());
+        setCreativeTab(Roomery.instance().creativeTab());
         setDefaultState(blockState.getBaseState()
                 .withProperty(FACING, EnumFacing.NORTH)
                 .withProperty(ACTIVE, false)

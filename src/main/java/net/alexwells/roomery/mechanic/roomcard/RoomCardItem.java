@@ -12,5 +12,6 @@ public class RoomCardItem extends Item {
         setMaxStackSize(16);
         setRegistryName(Roomery.MOD_ID, NAME);
         setTranslationKey(getRegistryName().toString());
+        setCreativeTab(Roomery.instance().creativeTab());
     }
 }
