@@ -2,6 +2,7 @@ package net.alexwells.roomery
 
 import net.alexwells.roomery.Constants.MOD_ID
 import net.alexwells.roomery.Constants.NAME
+import net.alexwells.roomery.Constants.UPDATE_JSON_URL
 import net.alexwells.roomery.Constants.VERSION
 import net.alexwells.roomery.gui.GuiHandler
 import net.alexwells.roomery.mechanic.roomcard.RoomCardItem
@@ -20,7 +21,8 @@ import net.minecraftforge.fml.common.network.NetworkRegistry
         version = VERSION,
         modLanguage = "kotlin",
         modLanguageAdapter = "net.shadowfacts.forgelin.KotlinAdapter",
-        dependencies = "required-before:forgelin@1.8.2"
+        dependencies = "required-before:forgelin@1.8.2",
+        updateJSON = UPDATE_JSON_URL
 )
 object Roomery {
     @SidedProxy(clientSide = "net.alexwells.roomery.proxy.ClientProxy", serverSide = "net.alexwells.roomery.proxy.ServerProxy")

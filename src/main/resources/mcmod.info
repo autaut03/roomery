@@ -6,7 +6,6 @@
     "version": "${version}",
     "mcversion": "${mcversion}",
     "url": "",
-    "updateJSON": "",
     "authorList": ["Alex_Wells"],
     "credits": "The Forge and FML guys; CompactMachines3 mod.",
     "logoFile": ""
