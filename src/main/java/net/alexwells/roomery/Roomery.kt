@@ -14,7 +14,13 @@ import net.minecraftforge.fml.common.SidedProxy
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
 import net.minecraftforge.fml.common.network.NetworkRegistry
 
-@Mod(modid = MOD_ID, name = NAME, version = VERSION, modLanguageAdapter = "net.shadowfacts.forgelin.KotlinAdapter")
+@Mod(
+        modid = MOD_ID,
+        name = NAME,
+        version = VERSION,
+        modLanguageAdapter = "net.shadowfacts.forgelin.KotlinAdapter",
+        dependencies = "required-before:forgelin@1.8.2"
+)
 object Roomery {
     @SidedProxy(clientSide = "net.alexwells.roomery.proxy.ClientProxy", serverSide = "net.alexwells.roomery.proxy.ServerProxy")
     lateinit var proxy: CommonProxy
