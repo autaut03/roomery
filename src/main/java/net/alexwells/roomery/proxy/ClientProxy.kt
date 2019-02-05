@@ -1,5 +1,6 @@
 package net.alexwells.roomery.proxy
 
+import net.alexwells.roomery.Registry
 import net.alexwells.roomery.mechanic.roomcard.RoomCardItem
 import net.alexwells.roomery.mechanic.roomholder.RoomHolderBlock
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
@@ -11,9 +12,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 class ClientProxy : CommonProxy() {
     @SubscribeEvent
     fun registerModels(event: ModelRegistryEvent) {
-        addItemModel(RoomCardItem)
-
-        addItemModel(Item.getItemFromBlock(RoomHolderBlock))
+        Registry.items.forEach(this::addItemModel)
+        Registry.blocks.forEach { addItemModel(Item.getItemFromBlock(it.block)) }
     }
 
     private fun addItemModel(item: Item) {

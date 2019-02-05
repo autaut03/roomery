@@ -1,37 +1,41 @@
 package net.alexwells.roomery.proxy
 
-import net.alexwells.roomery.mechanic.roomholder.RoomHolderBlock
-import net.alexwells.roomery.mechanic.roomcard.RoomCardItem
-import net.alexwells.roomery.mechanic.roomholder.RoomHolderTileEntity
+import net.alexwells.roomery.Registry
 import net.minecraft.block.Block
 import net.minecraft.item.Item
 import net.minecraft.item.ItemBlock
-import net.minecraft.util.ResourceLocation
 import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.common.registry.GameRegistry
-
-import net.alexwells.roomery.Constants.MOD_ID
 import net.minecraft.tileentity.TileEntity
 import kotlin.reflect.KClass
 
 abstract class CommonProxy {
     @SubscribeEvent
     fun registerBlocks(event: RegistryEvent.Register<Block>) {
-        event.registry.register(RoomHolderBlock)
-        registerTile(RoomHolderBlock, RoomHolderTileEntity::class)
+        Registry.blocks.forEach {
+            event.registry.register(it.block)
+
+            if(it.tile != null) {
+                registerTile(it.tile, it.block)
+            }
+        }
     }
 
     @SubscribeEvent
     fun registerItems(event: RegistryEvent.Register<Item>) {
-        event.registry.register(RoomCardItem)
+        Registry.items.forEach { event.registry.register(it) }
 
-        event.registry.register(createBlockItem(RoomHolderBlock))
+        Registry.blocks.forEach {
+            if(it.hasItem) {
+                event.registry.register(createBlockItem(it.block))
+            }
+        }
     }
 
     private fun createBlockItem(block: Block) = ItemBlock(block).setRegistryName(block.registryName)
 
-    private fun <T : TileEntity> registerTile(block: Block, tileEntityClass: KClass<T>) {
+    private fun <T : TileEntity> registerTile(tileEntityClass: KClass<T>, block: Block) {
         GameRegistry.registerTileEntity(tileEntityClass.java, block.registryName)
     }
 }
