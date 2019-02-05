@@ -1,0 +1,6 @@
+{
+  "parent": "roomery:block/room_configurator",
+  "display": {
+    "thirdperson": {}
+  }
+}
