@@ -1,7 +1,6 @@
 package net.alexwells.roomery.mechanic.roomholder
 
 import net.alexwells.roomery.MOD_ID
-import net.alexwells.roomery.util.WorldUtils
 import net.alexwells.roomery.util.getTile
 import net.minecraft.block.*
 import net.minecraft.block.material.Material
