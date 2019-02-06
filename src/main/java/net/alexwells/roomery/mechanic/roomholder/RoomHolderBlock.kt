@@ -2,6 +2,7 @@ package net.alexwells.roomery.mechanic.roomholder
 
 import net.alexwells.roomery.MOD_ID
 import net.alexwells.roomery.util.WorldUtils
+import net.alexwells.roomery.util.getTile
 import net.minecraft.block.*
 import net.minecraft.block.material.Material
 import net.minecraft.block.state.IBlockState
@@ -67,7 +68,7 @@ object RoomHolderBlock : Block(Block.Builder
     override fun getDrops(state: IBlockState, drops: NonNullList<ItemStack>, world: World, pos: BlockPos, fortune: Int) {
         super.getDrops(state, drops, world, pos, fortune)
 
-        val tile = WorldUtils.getTileEntity<RoomHolderTileEntity>(world, pos)
+        val tile = world.getTile<RoomHolderTileEntity>(pos)
 
         if (tile == null || tile.roomCard == null) {
             return
@@ -87,7 +88,7 @@ object RoomHolderBlock : Block(Block.Builder
             return true
         }
 
-        if(WorldUtils.getTileEntity<RoomHolderTileEntity>(world, pos) == null) {
+        if(world.getTile<RoomHolderTileEntity>(pos) == null) {
             return false
         }
 
