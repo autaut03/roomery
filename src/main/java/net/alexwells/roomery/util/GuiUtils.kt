@@ -12,6 +12,6 @@ object GuiUtils {
     }
 
     fun openGui(player: EntityPlayer, guiType: GuiEnum, world: World, x: Int, y: Int, z: Int) {
-        player.openGui(Roomery, guiType.id, world, x, y, z)
+        //player.displayGui(Roomery, guiType.id, world, x, y, z)
     }
 }

@@ -9,7 +9,7 @@ import net.minecraftforge.items.SlotItemHandler
 
 class RoomHolderContainer(playerInventory: InventoryPlayer, tile: RoomHolderTileEntity) : ContainerBase(176, 114 + 6 * 18) {
     init {
-        addSlotToContainer(SlotItemHandler(
+        addSlot(SlotItemHandler(
                 tile.itemHandler,
                 RoomHolderTileEntity.ROOM_CARD_SLOT,
                 INVENTORY_BORDER + 1,

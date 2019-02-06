@@ -1,19 +1,21 @@
 package net.alexwells.roomery.mechanic.roomconfigurator
 
-import net.alexwells.roomery.Constants.MOD_ID
-import net.alexwells.roomery.Roomery
+import net.alexwells.roomery.MOD_ID
 import net.minecraft.block.Block
+import net.minecraft.block.SoundType
 import net.minecraft.block.material.Material
-import net.minecraft.block.properties.PropertyDirection
-import net.minecraft.block.state.BlockStateContainer
 import net.minecraft.block.state.IBlockState
-import net.minecraft.entity.EntityLivingBase
+import net.minecraft.item.BlockItemUseContext
+import net.minecraft.state.DirectionProperty
+import net.minecraft.state.StateContainer
+import net.minecraft.state.properties.BlockStateProperties
 import net.minecraft.util.EnumFacing
-import net.minecraft.util.EnumHand
-import net.minecraft.util.math.BlockPos
-import net.minecraft.world.World
 
-object RoomConfiguratorBlock : Block(Material.IRON) {
+object RoomConfiguratorBlock : Block(Block.Builder
+        .create(Material.IRON)
+        .hardnessAndResistance(2f)
+        .sound(SoundType.METAL)
+) {
     const val NAME = "room_configurator"
 
     // Sadly, we have to declare properties inside another object.
@@ -23,25 +25,22 @@ object RoomConfiguratorBlock : Block(Material.IRON) {
     // These won't be initialized before Block()'s constructor
     // ends what it does.
     private object Properties {
-        val FACING: PropertyDirection = PropertyDirection.create("facing")
+        val FACING: DirectionProperty = BlockStateProperties.FACING
     }
 
     init {
-        setHardness(2f)
         setRegistryName(MOD_ID, NAME)
-        translationKey = registryName.toString()
-        creativeTab = Roomery.creativeTab
-        defaultState = blockState.baseState
-                .withProperty(Properties.FACING, EnumFacing.NORTH)
+        defaultState = stateContainer.baseState
+                .with(Properties.FACING, EnumFacing.NORTH)
     }
 
-    override fun createBlockState() = BlockStateContainer(this, Properties.FACING)
+    override fun fillStateContainer(builder: StateContainer.Builder<Block, IBlockState>) {
+        super.fillStateContainer(builder)
 
-    override fun getMetaFromState(state: IBlockState) = state.getValue(Properties.FACING).index
+        builder.add(Properties.FACING)
+    }
 
-    override fun getStateFromMeta(meta: Int) = defaultState.withProperty(Properties.FACING, EnumFacing.byIndex(meta))
-
-    override fun getStateForPlacement(world: World, pos: BlockPos, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float, meta: Int, placer: EntityLivingBase, hand: EnumHand?): IBlockState {
-        return defaultState.withProperty(Properties.FACING, EnumFacing.getDirectionFromEntityLiving(pos, placer))
+    override fun getStateForPlacement(context: BlockItemUseContext): IBlockState? {
+        return defaultState.blockState.with(Properties.FACING, context.nearestLookingDirection.opposite)
     }
 }

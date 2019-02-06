@@ -1,13 +1,13 @@
 package net.alexwells.roomery.tile
 
-import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.NetworkManager
 import net.minecraft.network.play.server.SPacketUpdateTileEntity
 import net.minecraft.tileentity.TileEntity
+import net.minecraft.tileentity.TileEntityType
 
-abstract class TileEntityBase : TileEntity() {
+abstract class TileEntityBase(tileEntityTypeIn: TileEntityType<*>) : TileEntity(tileEntityTypeIn) {
     protected fun sendUpdatePacket() {
         if (world.isRemote) {
             return
@@ -30,13 +30,13 @@ abstract class TileEntityBase : TileEntity() {
         }
 
         val tagCompound = NBTTagCompound()
-        writeToNBT(tagCompound)
+        write(tagCompound)
 
         return SPacketUpdateTileEntity(pos, 1, tagCompound)
     }
 
     override fun onDataPacket(net: NetworkManager, pkt: SPacketUpdateTileEntity) {
-        readFromNBT(pkt.nbtCompound)
+        read(pkt.nbtCompound)
 
         world.markBlockRangeForRenderUpdate(pos, pos)
     }

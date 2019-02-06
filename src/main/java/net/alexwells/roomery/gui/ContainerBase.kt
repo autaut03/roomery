@@ -26,12 +26,12 @@ abstract class ContainerBase(width: Int, private val height: Int) : Container() 
 
         for (i in 0..2) {
             for (j in 0..8) {
-                this.addSlotToContainer(Slot(playerInventory, j + i * 9 + 9, xPlayerInv + j * SLOT_SIZE, yPlayerInv + i * SLOT_SIZE))
+                this.addSlot(Slot(playerInventory, j + i * 9 + 9, xPlayerInv + j * SLOT_SIZE, yPlayerInv + i * SLOT_SIZE))
             }
         }
 
         for (k in 0..8) {
-            this.addSlotToContainer(Slot(playerInventory, k, xPlayerInv + k * SLOT_SIZE, yPlayerInv + SLOT_SIZE * 3 + PLAYER_INVENTORY_HOTBAR_SPACING))
+            this.addSlot(Slot(playerInventory, k, xPlayerInv + k * SLOT_SIZE, yPlayerInv + SLOT_SIZE * 3 + PLAYER_INVENTORY_HOTBAR_SPACING))
         }
     }
 

@@ -1,28 +1,29 @@
 package net.alexwells.roomery.mechanic.roomholder
 
-import net.alexwells.roomery.Constants.MOD_ID
-import net.alexwells.roomery.Roomery
-import net.alexwells.roomery.gui.GuiEnum
-import net.alexwells.roomery.util.GuiUtils
+import net.alexwells.roomery.MOD_ID
 import net.alexwells.roomery.util.WorldUtils
 import net.minecraft.block.*
 import net.minecraft.block.material.Material
-import net.minecraft.block.properties.PropertyBool
-import net.minecraft.block.properties.PropertyDirection
-import net.minecraft.block.state.BlockStateContainer
 import net.minecraft.block.state.IBlockState
-import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.item.BlockItemUseContext
 import net.minecraft.item.ItemStack
-import net.minecraft.tileentity.TileEntity
+import net.minecraft.state.BooleanProperty
+import net.minecraft.state.DirectionProperty
+import net.minecraft.state.StateContainer
+import net.minecraft.state.properties.BlockStateProperties
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
 import net.minecraft.util.NonNullList
 import net.minecraft.util.math.BlockPos
-import net.minecraft.world.IBlockAccess
+import net.minecraft.world.IBlockReader
 import net.minecraft.world.World
 
-object RoomHolderBlock : Block(Material.IRON) {
+object RoomHolderBlock : Block(Block.Builder
+        .create(Material.IRON)
+        .hardnessAndResistance(2f)
+        .sound(SoundType.METAL)
+) {
     const val NAME = "room_holder"
 
     // Sadly, we have to declare properties inside another object.
@@ -32,42 +33,39 @@ object RoomHolderBlock : Block(Material.IRON) {
     // These won't be initialized before Block()'s constructor
     // ends what it does.
     private object Properties {
-        val FACING: PropertyDirection = PropertyDirection.create("facing")
-        val ACTIVE: PropertyBool = PropertyBool.create("active")
+        val FACING: DirectionProperty = BlockStateProperties.FACING
+        val ACTIVE: BooleanProperty = BooleanProperty.create("active")
     }
 
     init {
-        setHardness(2f)
         setRegistryName(MOD_ID, NAME)
-        translationKey = registryName.toString()
-        creativeTab = Roomery.creativeTab
-        defaultState = blockState.baseState
-                .withProperty(Properties.FACING, EnumFacing.NORTH)
-                .withProperty(Properties.ACTIVE, false)
+        defaultState = stateContainer.baseState
+                .with(Properties.FACING, EnumFacing.NORTH)
+                .with(Properties.ACTIVE, false)
     }
 
-    override fun createBlockState() = BlockStateContainer(this, Properties.FACING, Properties.ACTIVE)
+    override fun fillStateContainer(builder: StateContainer.Builder<Block, IBlockState>) {
+        super.fillStateContainer(builder)
 
-    override fun getMetaFromState(state: IBlockState) = state.getValue(Properties.FACING).index
+        builder.add(Properties.FACING, Properties.ACTIVE)
+    }
 
-    override fun getStateFromMeta(meta: Int) = defaultState.withProperty(Properties.FACING, EnumFacing.byIndex(meta))
+    override fun hasTileEntity(state: IBlockState?) = true
 
-    override fun getActualState(state: IBlockState, world: IBlockAccess, pos: BlockPos): IBlockState {
+    override fun createTileEntity(state: IBlockState?, world: IBlockReader?) = RoomHolderTileEntity()
+
+    /*override fun getActualState(state: IBlockState, world: IBlockAccess, pos: BlockPos): IBlockState {
         val tile = WorldUtils.getTileEntity<RoomHolderTileEntity>(world, pos)
 
         return state.withProperty(Properties.ACTIVE, tile != null && tile.isActive())
+    }*/
+
+    override fun getStateForPlacement(context: BlockItemUseContext): IBlockState? {
+        return defaultState.blockState.with(Properties.FACING, context.nearestLookingDirection.opposite)
     }
 
-    override fun getStateForPlacement(world: World, pos: BlockPos, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float, meta: Int, placer: EntityLivingBase, hand: EnumHand?): IBlockState {
-        return defaultState.withProperty(Properties.FACING, EnumFacing.getDirectionFromEntityLiving(pos, placer))
-    }
-
-    override fun hasTileEntity(p_hasTileEntity_1_: IBlockState?) = true
-
-    override fun createTileEntity(world: World, state: IBlockState) = RoomHolderTileEntity()
-
-    override fun getDrops(drops: NonNullList<ItemStack>, world: IBlockAccess, pos: BlockPos, state: IBlockState, fortune: Int) {
-        super.getDrops(drops, world, pos, state, fortune)
+    override fun getDrops(state: IBlockState, drops: NonNullList<ItemStack>, world: World, pos: BlockPos, fortune: Int) {
+        super.getDrops(state, drops, world, pos, fortune)
 
         val tile = WorldUtils.getTileEntity<RoomHolderTileEntity>(world, pos)
 
@@ -78,7 +76,7 @@ object RoomHolderBlock : Block(Material.IRON) {
         drops.add(tile.roomCard)
     }
 
-    override fun onBlockActivated(world: World, pos: BlockPos, state: IBlockState, player: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
+    override fun onBlockActivated(state: IBlockState, world: World, pos: BlockPos, player: EntityPlayer, hand: EnumHand, side: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
         // If sneaking, let the block be placed
         if (player.isSneaking) {
             return false
@@ -93,7 +91,8 @@ object RoomHolderBlock : Block(Material.IRON) {
             return false
         }
 
-        GuiUtils.openGui(player, GuiEnum.ROOM_HOLDER, world, pos)
+        // todo
+        //GuiUtils.openGui(player, GuiEnum.ROOM_HOLDER, world, pos)
 
         return true
     }
