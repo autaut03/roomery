@@ -1,6 +1,5 @@
 package net.alexwells.roomery.util
 
-import net.alexwells.roomery.Roomery
 import net.alexwells.roomery.gui.GuiEnum
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.util.math.BlockPos

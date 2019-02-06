@@ -1,14 +1,13 @@
 package net.alexwells.roomery.mechanic.roomcard
 
+import net.alexwells.roomery.Reference
 import net.minecraft.item.Item
-import net.alexwells.roomery.MOD_ID
 
 object RoomCardItem : Item(Item.Builder()
         .maxStackSize(16)
+        .group(Reference.itemGroup)
 ) {
-    const val NAME = "room_card"
-
     init {
-        setRegistryName(MOD_ID, NAME)
+        registryName = Reference.createResource("room_card")
     }
 }

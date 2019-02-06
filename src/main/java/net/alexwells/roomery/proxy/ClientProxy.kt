@@ -1,10 +1,8 @@
 package net.alexwells.roomery.proxy
 
 import net.alexwells.roomery.Registry
-import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.item.Item
 import net.minecraftforge.client.event.ModelRegistryEvent
-import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.eventbus.api.SubscribeEvent
 
 class ClientProxy : CommonProxy() {

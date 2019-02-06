@@ -1,6 +1,6 @@
 package net.alexwells.roomery.mechanic.roomconfigurator
 
-import net.alexwells.roomery.MOD_ID
+import net.alexwells.roomery.Reference
 import net.minecraft.block.Block
 import net.minecraft.block.SoundType
 import net.minecraft.block.material.Material
@@ -16,8 +16,6 @@ object RoomConfiguratorBlock : Block(Block.Builder
         .hardnessAndResistance(2f)
         .sound(SoundType.METAL)
 ) {
-    const val NAME = "room_configurator"
-
     // Sadly, we have to declare properties inside another object.
     // This is because if you declare them directly, Block()'s
     // constructor will call createBlockState(), which
@@ -29,7 +27,7 @@ object RoomConfiguratorBlock : Block(Block.Builder
     }
 
     init {
-        setRegistryName(MOD_ID, NAME)
+        registryName = Reference.createResource("room_configurator")
         defaultState = stateContainer.baseState
                 .with(Properties.FACING, EnumFacing.NORTH)
     }

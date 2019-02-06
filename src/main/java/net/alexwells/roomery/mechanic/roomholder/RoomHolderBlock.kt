@@ -1,8 +1,9 @@
 package net.alexwells.roomery.mechanic.roomholder
 
-import net.alexwells.roomery.MOD_ID
+import net.alexwells.roomery.Reference
 import net.alexwells.roomery.util.getTile
-import net.minecraft.block.*
+import net.minecraft.block.Block
+import net.minecraft.block.SoundType
 import net.minecraft.block.material.Material
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.player.EntityPlayer
@@ -24,8 +25,6 @@ object RoomHolderBlock : Block(Block.Builder
         .hardnessAndResistance(2f)
         .sound(SoundType.METAL)
 ) {
-    const val NAME = "room_holder"
-
     // Sadly, we have to declare properties inside another object.
     // This is because if you declare them directly, Block()'s
     // constructor will call createBlockState(), which
@@ -38,7 +37,7 @@ object RoomHolderBlock : Block(Block.Builder
     }
 
     init {
-        setRegistryName(MOD_ID, NAME)
+        registryName = Reference.createResource("room_holder")
         defaultState = stateContainer.baseState
                 .with(Properties.FACING, EnumFacing.NORTH)
                 .with(Properties.ACTIVE, false)

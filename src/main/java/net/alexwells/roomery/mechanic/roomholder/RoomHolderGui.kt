@@ -1,6 +1,6 @@
 package net.alexwells.roomery.mechanic.roomholder
 
-import net.alexwells.roomery.MOD_ID
+import net.alexwells.roomery.Reference.MOD_ID
 import net.minecraft.client.gui.inventory.GuiContainer
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.entity.player.InventoryPlayer
