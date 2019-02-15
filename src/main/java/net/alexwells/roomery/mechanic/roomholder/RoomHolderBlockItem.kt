@@ -4,8 +4,8 @@ import net.alexwells.roomery.Reference
 import net.minecraft.item.Item
 import net.minecraft.item.ItemBlock
 
-object RoomHolderBlockItem : ItemBlock(RoomHolderBlock, Item.Builder()
         .group(Reference.itemGroup)
+object RoomHolderBlockItem : ItemBlock(RoomHolderBlock, Item.Properties()
 ) {
     init {
         registryName = RoomHolderBlock.registryName

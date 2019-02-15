@@ -20,7 +20,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockReader
 import net.minecraft.world.World
 
-object RoomHolderBlock : Block(Block.Builder
+object RoomHolderBlock : Block(Block.Properties
         .create(Material.IRON)
         .hardnessAndResistance(2f)
         .sound(SoundType.METAL)

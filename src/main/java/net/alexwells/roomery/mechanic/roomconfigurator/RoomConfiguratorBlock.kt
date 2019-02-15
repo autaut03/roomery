@@ -11,7 +11,7 @@ import net.minecraft.state.StateContainer
 import net.minecraft.state.properties.BlockStateProperties
 import net.minecraft.util.EnumFacing
 
-object RoomConfiguratorBlock : Block(Block.Builder
+object RoomConfiguratorBlock : Block(Block.Properties
         .create(Material.IRON)
         .hardnessAndResistance(2f)
         .sound(SoundType.METAL)
