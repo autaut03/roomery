@@ -40,6 +40,8 @@ minecraft {
             properties 'forge.logging.markers': 'SCAN,REGISTRIES,REGISTRYDUMP'
             // recommended logging level for the console
             properties 'forge.logging.console.level': 'debug'
+            // console colors
+            properties 'forge.logging.noansi': 'false'
             workingDirectory project.file('run').canonicalPath
             source sourceSets.main
         }
@@ -48,6 +50,8 @@ minecraft {
             properties 'forge.logging.markers': 'SCAN,REGISTRIES,REGISTRYDUMP'
             // recommended logging level for the console
             properties 'forge.logging.console.level': 'debug'
+            // console colors
+            properties 'forge.logging.noansi': 'false'
             workingDirectory project.file('run').canonicalPath
             source sourceSets.main
         }
