@@ -1,16 +1,13 @@
 package net.alexwells.roomery.mechanic.roomholder
 
-import net.alexwells.roomery.Reference.MOD_ID
+import net.alexwells.roomery.Roomery
 import net.minecraft.client.gui.inventory.GuiContainer
 import net.minecraft.client.renderer.GlStateManager
-import net.minecraft.entity.player.InventoryPlayer
-import net.minecraft.util.ResourceLocation
 
 class RoomHolderGui(
-        private val playerInventory: InventoryPlayer,
-        private val tile: RoomHolderTileEntity
-) : GuiContainer(RoomHolderContainer(playerInventory, tile)) {
-    private val GUI_TEXTURE = ResourceLocation(MOD_ID, "textures/gui/container/room_holder.png")
+        private val container: RoomHolderContainer
+) : GuiContainer(container) {
+    private val GUI_TEXTURE = Roomery.createResource("textures/gui/container/room_holder.png")
 
     init {
         this.allowUserInput = false
@@ -31,7 +28,7 @@ class RoomHolderGui(
      */
     override fun drawGuiContainerForegroundLayer(mouseX: Int, mouseY: Int) {
         //this.fontRenderer.drawString(tile.displayName.string, 8f, 6f, 4210752)
-        this.fontRenderer.drawString(playerInventory.displayName.string, 8f, (this.ySize - 96 + 2).toFloat(), 4210752)
+        this.fontRenderer.drawString(container.playerInventory.displayName.string, 8f, (this.ySize - 96 + 2).toFloat(), 4210752)
     }
 
     /**

@@ -2,16 +2,21 @@ package net.alexwells.roomery.mechanic.roomholder
 
 import net.alexwells.roomery.mechanic.roomcard.RoomCardItem
 import net.alexwells.roomery.tile.TileEntityBase
+import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.entity.player.InventoryPlayer
+import net.minecraft.inventory.Container
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
+import net.minecraft.util.text.ITextComponent
+import net.minecraft.world.IInteractionObject
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.capabilities.ICapabilityProvider
 import net.minecraftforge.common.util.LazyOptional
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.ItemStackHandler
 
-class RoomHolderTileEntity : TileEntityBase(RoomHolderTileType), ICapabilityProvider {
+class RoomHolderTileEntity : TileEntityBase(RoomHolderTileType), ICapabilityProvider, IInteractionObject {
     val itemHandler: ItemStackHandler = object : ItemStackHandler(1) {
         override fun onContentsChanged(slot: Int) {
             super.onContentsChanged(slot)
@@ -69,6 +74,16 @@ class RoomHolderTileEntity : TileEntityBase(RoomHolderTileType), ICapabilityProv
 
         return LazyOptional.empty()
     }
+
+    override fun getName(): ITextComponent = RoomHolderBlock.nameTextComponent
+    override fun getGuiID(): String = RoomHolderBlock.registryName.toString()
+
+    override fun createContainer(playerInventory: InventoryPlayer, playerIn: EntityPlayer): Container {
+        return RoomHolderContainer(playerInventory, this)
+    }
+
+    override fun hasCustomName(): Boolean = false
+    override fun getCustomName(): ITextComponent? = null
 
     companion object {
         const val ITEM_HANDLER_TAG = "ItemHandler"

@@ -1,6 +1,6 @@
 package net.alexwells.roomery.mechanic.roomconfigurator
 
-import net.alexwells.roomery.Reference
+import net.alexwells.roomery.Roomery
 import net.minecraft.block.Block
 import net.minecraft.block.SoundType
 import net.minecraft.block.material.Material
@@ -27,7 +27,7 @@ object RoomConfiguratorBlock : Block(Block.Properties
     }
 
     init {
-        registryName = Reference.createResource("room_configurator")
+        registryName = Roomery.createResource("room_configurator")
         defaultState = stateContainer.baseState
                 .with(Properties.FACING, EnumFacing.NORTH)
     }

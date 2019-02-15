@@ -1,12 +1,13 @@
 package net.alexwells.roomery.mechanic.roomholder
 
-import net.alexwells.roomery.Reference
+import net.alexwells.roomery.Roomery
 import net.alexwells.roomery.util.getTile
 import net.minecraft.block.Block
 import net.minecraft.block.SoundType
 import net.minecraft.block.material.Material
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.item.BlockItemUseContext
 import net.minecraft.item.ItemStack
 import net.minecraft.state.BooleanProperty
@@ -19,6 +20,7 @@ import net.minecraft.util.NonNullList
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockReader
 import net.minecraft.world.World
+import net.minecraftforge.fml.network.NetworkHooks
 
 object RoomHolderBlock : Block(Block.Properties
         .create(Material.IRON)
@@ -37,7 +39,7 @@ object RoomHolderBlock : Block(Block.Properties
     }
 
     init {
-        registryName = Reference.createResource("room_holder")
+        registryName = Roomery.createResource("room_holder")
         defaultState = stateContainer.baseState
                 .with(Properties.FACING, EnumFacing.NORTH)
                 .with(Properties.ACTIVE, false)
@@ -86,12 +88,9 @@ object RoomHolderBlock : Block(Block.Properties
             return true
         }
 
-        if(world.getTile<RoomHolderTileEntity>(pos) == null) {
-            return false
-        }
+        val tile = world.getTile<RoomHolderTileEntity>(pos) ?: return false
 
-        // todo
-        //GuiUtils.openGui(player, GuiEnum.ROOM_HOLDER, world, pos)
+        NetworkHooks.openGui(player as EntityPlayerMP, tile, null)
 
         return true
     }

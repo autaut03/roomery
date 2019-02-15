@@ -1,18 +1,27 @@
 package net.alexwells.roomery.proxy
 
-import net.alexwells.roomery.Registry
-import net.minecraft.item.Item
-import net.minecraftforge.client.event.ModelRegistryEvent
-import net.minecraftforge.eventbus.api.SubscribeEvent
+import net.alexwells.roomery.mechanic.roomholder.RoomHolderBlock
+import net.alexwells.roomery.mechanic.roomholder.RoomHolderContainer
+import net.alexwells.roomery.mechanic.roomholder.RoomHolderGui
+import net.minecraft.client.Minecraft
+import net.minecraft.client.gui.GuiScreen
+import net.minecraftforge.fml.ExtensionPoint
+import net.minecraftforge.fml.ModLoadingContext
+import net.minecraftforge.fml.network.FMLPlayMessages
+import java.util.function.Function
 
 class ClientProxy : CommonProxy() {
-    @SubscribeEvent
-    fun registerModels(event: ModelRegistryEvent) {
-        Registry.items.forEach(this::addItemModel)
-        Registry.blocks.forEach { addItemModel(Item.getItemFromBlock(it.block)) }
+    init {
+        ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.GUIFACTORY) {
+            Function { container -> handleGui(container)  }
+        }
     }
 
-    private fun addItemModel(item: Item) {
-        //ModelLoader.setCustomModelResourceLocation(item, 0, ModelResourceLocation(item.registryName!!, "inventory"))
+    private fun handleGui(container: FMLPlayMessages.OpenContainer): GuiScreen? {
+        if (container.id == RoomHolderBlock.registryName) {
+            return RoomHolderGui(Minecraft.getInstance().player.openContainer as RoomHolderContainer)
+        }
+
+        return null
     }
 }
