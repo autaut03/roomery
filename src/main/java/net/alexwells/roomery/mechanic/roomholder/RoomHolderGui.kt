@@ -27,7 +27,7 @@ class RoomHolderGui(
      * Draw the foreground layer for the GuiContainer (everything in front of the items)
      */
     override fun drawGuiContainerForegroundLayer(mouseX: Int, mouseY: Int) {
-        //this.fontRenderer.drawString(tile.displayName.string, 8f, 6f, 4210752)
+        this.fontRenderer.drawString(container.tile.displayName.string, 8f, 6f, 4210752)
         this.fontRenderer.drawString(container.playerInventory.displayName.string, 8f, (this.ySize - 96 + 2).toFloat(), 4210752)
     }
 

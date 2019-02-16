@@ -30,7 +30,7 @@ class RoomHolderTileEntity : TileEntityBase(RoomHolderTileType), ICapabilityProv
         override fun insertItem(slot: Int, stack: ItemStack, simulate: Boolean): ItemStack {
             return if (!isItemValid(slot, stack)) {
                 stack
-            } else return super.insertItem(slot, stack, simulate)
+            } else super.insertItem(slot, stack, simulate)
         }
 
         override fun isItemValid(slot: Int, stack: ItemStack): Boolean {
