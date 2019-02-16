@@ -1,5 +1,6 @@
 package net.alexwells.roomery
 
+import net.alexwells.kottle.FMLKotlinModLoadingContext
 import net.alexwells.roomery.mechanic.roomcard.RoomCardItem
 import net.alexwells.roomery.proxy.ClientProxy
 import net.alexwells.roomery.proxy.CommonProxy
@@ -9,7 +10,6 @@ import net.minecraft.item.ItemStack
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.fml.DistExecutor
 import net.minecraftforge.fml.common.Mod
-import net.shadowfacts.forgelin.FMLKotlinModLoadingContext
 import java.util.function.Supplier
 
 const val MOD_ID = "roomery"

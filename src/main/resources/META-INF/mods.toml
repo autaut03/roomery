@@ -1,5 +1,5 @@
 modLoader="kotlinfml"
-loaderVersion="[2,)"
+loaderVersion="[1,)"
 issueTrackerURL="https://github.com/autaut03/roomery/issues"
 displayURL="https://github.com/autaut03/roomery"
 logoFile="examplemod.png"
