@@ -30,13 +30,13 @@ class RoomHolderTileEntity : TileEntityBase(RoomHolderTileType), ICapabilityProv
         override fun insertItem(slot: Int, stack: ItemStack, simulate: Boolean): ItemStack {
             return if (!isItemValid(slot, stack)) {
                 stack
-            } else super.insertItem(slot, stack, simulate)
+            } else return super.insertItem(slot, stack, simulate)
         }
 
         override fun isItemValid(slot: Int, stack: ItemStack): Boolean {
             return if (slot == ROOM_CARD_SLOT && stack.item is RoomCardItem) {
                 true
-            } else super.isItemValid(slot, stack)
+            } else false
         }
 
         override fun getSlotLimit(slot: Int): Int {
@@ -62,7 +62,7 @@ class RoomHolderTileEntity : TileEntityBase(RoomHolderTileType), ICapabilityProv
     }
 
     override fun write(compound: NBTTagCompound): NBTTagCompound {
-        compound.setTag(ITEM_HANDLER_TAG, this.itemHandler.serializeNBT())
+        compound.put(ITEM_HANDLER_TAG, this.itemHandler.serializeNBT())
 
         return super.write(compound)
     }

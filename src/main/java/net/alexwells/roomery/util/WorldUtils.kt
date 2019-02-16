@@ -11,7 +11,7 @@ fun <T : TileEntity> IBlockReader.getTile(pos: BlockPos): T? {
     try {
         return tileEntity as T?
     } catch (ex: ClassCastException) {
-        LogManager.getLogger().error("Error happened while trying to cast world's tile entity into needed type.")
+        LogManager.getLogger().error("Trying to cast world's tile entity into needed type.")
         LogManager.getLogger().catching(ex)
     }
 

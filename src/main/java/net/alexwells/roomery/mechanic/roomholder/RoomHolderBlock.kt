@@ -1,5 +1,6 @@
 package net.alexwells.roomery.mechanic.roomholder
 
+import io.netty.buffer.Unpooled
 import net.alexwells.roomery.Roomery
 import net.alexwells.roomery.util.getTile
 import net.minecraft.block.Block
@@ -10,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.item.BlockItemUseContext
 import net.minecraft.item.ItemStack
+import net.minecraft.network.PacketBuffer
 import net.minecraft.state.BooleanProperty
 import net.minecraft.state.DirectionProperty
 import net.minecraft.state.StateContainer
@@ -90,7 +92,7 @@ object RoomHolderBlock : Block(Block.Properties
 
         val tile = world.getTile<RoomHolderTileEntity>(pos) ?: return false
 
-        NetworkHooks.openGui(player as EntityPlayerMP, tile, null)
+        NetworkHooks.openGui(player as EntityPlayerMP, tile, PacketBuffer(Unpooled.buffer()).writeBlockPos(pos))
 
         return true
     }
