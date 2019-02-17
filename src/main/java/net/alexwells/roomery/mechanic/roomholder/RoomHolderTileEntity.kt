@@ -25,7 +25,7 @@ class RoomHolderTileEntity : TileEntityBase(RoomHolderTileType), ICapabilityProv
             markDirty()
 
             // Here we should tell the client that this block has changed in some way
-            // client will receive this and trigger world.markBlockRangeForRenderUpdate()
+            // client will receive this and update block state.
             sendUpdatePacket()
         }
 
@@ -84,7 +84,7 @@ class RoomHolderTileEntity : TileEntityBase(RoomHolderTileType), ICapabilityProv
     }
 
     override fun getName(): ITextComponent = RoomHolderBlock.nameTextComponent
-    override fun getGuiID(): String = RoomHolderBlock.registryName.toString()
+    override fun getGuiID(): String = ROOM_HOLDER_RESOURCE.toString()
 
     override fun createContainer(playerInventory: InventoryPlayer, playerIn: EntityPlayer): Container {
         return RoomHolderContainer(playerInventory, this)

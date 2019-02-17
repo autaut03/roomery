@@ -8,6 +8,6 @@ object RoomHolderBlockItem : ItemBlock(RoomHolderBlock, Item.Properties()
         .group(Roomery.itemGroup)
 ) {
     init {
-        registryName = RoomHolderBlock.registryName
+        registryName = ROOM_HOLDER_RESOURCE
     }
 }

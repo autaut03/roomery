@@ -41,7 +41,7 @@ object RoomHolderBlock : Block(Block.Properties
     }
 
     init {
-        registryName = Roomery.createResource("room_holder")
+        registryName = ROOM_HOLDER_RESOURCE
         defaultState = stateContainer.baseState
                 .with(Properties.FACING, EnumFacing.NORTH)
                 .with(Properties.ACTIVE, false)

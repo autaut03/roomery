@@ -5,6 +5,6 @@ import java.util.function.Supplier
 
 object RoomHolderTileType : TileEntityType<RoomHolderTileEntity>(Supplier { RoomHolderTileEntity() }, null) {
     init {
-        registryName = RoomHolderBlock.registryName
+        registryName = ROOM_HOLDER_RESOURCE
     }
 }
