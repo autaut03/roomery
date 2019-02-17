@@ -7,6 +7,8 @@ import net.minecraft.entity.player.InventoryPlayer
 import net.minecraft.inventory.Container
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.network.NetworkManager
+import net.minecraft.network.play.server.SPacketUpdateTileEntity
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.text.ITextComponent
 import net.minecraft.world.IInteractionObject
@@ -73,6 +75,12 @@ class RoomHolderTileEntity : TileEntityBase(RoomHolderTileType), ICapabilityProv
         }
 
         return LazyOptional.empty()
+    }
+
+    override fun onDataPacket(net: NetworkManager, pkt: SPacketUpdateTileEntity) {
+        super.onDataPacket(net, pkt)
+
+        world.setBlockState(pos, world.getBlockState(pos).with(RoomHolderBlock.Properties.ACTIVE, isActive()))
     }
 
     override fun getName(): ITextComponent = RoomHolderBlock.nameTextComponent

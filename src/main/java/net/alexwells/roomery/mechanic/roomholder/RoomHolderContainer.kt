@@ -7,7 +7,7 @@ import net.alexwells.roomery.gui.GuiConstants.SLOT_SIZE
 import net.minecraft.entity.player.InventoryPlayer
 import net.minecraftforge.items.SlotItemHandler
 
-class RoomHolderContainer(public val playerInventory: InventoryPlayer, public val tile: RoomHolderTileEntity) : ContainerBase(176, 114 + 6 * 18) {
+class RoomHolderContainer(val playerInventory: InventoryPlayer, val tile: RoomHolderTileEntity) : ContainerBase(176, 114 + 6 * 18) {
     init {
         addSlot(SlotItemHandler(
                 tile.itemHandler,

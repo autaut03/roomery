@@ -37,7 +37,5 @@ abstract class TileEntityBase(tileEntityTypeIn: TileEntityType<*>) : TileEntity(
 
     override fun onDataPacket(net: NetworkManager, pkt: SPacketUpdateTileEntity) {
         read(pkt.nbtCompound)
-
-        world.markBlockRangeForRenderUpdate(pos, pos)
     }
 }

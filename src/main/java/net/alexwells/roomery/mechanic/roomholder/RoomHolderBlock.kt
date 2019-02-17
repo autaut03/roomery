@@ -35,7 +35,7 @@ object RoomHolderBlock : Block(Block.Properties
     // will try to access these properties and get null.
     // These won't be initialized before Block()'s constructor
     // ends what it does.
-    private object Properties {
+    object Properties {
         val FACING: DirectionProperty = BlockStateProperties.FACING
         val ACTIVE: BooleanProperty = BooleanProperty.create("active")
     }
@@ -56,12 +56,6 @@ object RoomHolderBlock : Block(Block.Properties
     override fun hasTileEntity(state: IBlockState?) = true
 
     override fun createTileEntity(state: IBlockState?, world: IBlockReader?) = RoomHolderTileEntity()
-
-    /*override fun getActualState(state: IBlockState, world: IBlockAccess, pos: BlockPos): IBlockState {
-        val tile = WorldUtils.getTileEntity<RoomHolderTileEntity>(world, pos)
-
-        return state.withProperty(Properties.ACTIVE, tile != null && tile.isActive())
-    }*/
 
     override fun getStateForPlacement(context: BlockItemUseContext): IBlockState? {
         return defaultState.blockState.with(Properties.FACING, context.nearestLookingDirection.opposite)
