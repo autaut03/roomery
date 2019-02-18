@@ -66,7 +66,7 @@ object RoomHolderBlock : Block(Block.Properties
 
         val tile = world.getTile<RoomHolderTileEntity>(pos)
 
-        if (tile == null || tile.roomCard == null) {
+        if (tile?.roomCard == null) {
             return
         }
 
@@ -86,7 +86,7 @@ object RoomHolderBlock : Block(Block.Properties
 
         val tile = world.getTile<RoomHolderTileEntity>(pos) ?: return false
 
-        NetworkHooks.openGui(player as EntityPlayerMP, tile, PacketBuffer(Unpooled.buffer()).writeBlockPos(pos))
+        NetworkHooks.openGui(player as EntityPlayerMP, tile) { buf -> buf.writeBlockPos(pos) }
 
         return true
     }
