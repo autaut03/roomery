@@ -9,16 +9,11 @@ import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.NetworkManager
 import net.minecraft.network.play.server.SPacketUpdateTileEntity
-import net.minecraft.util.EnumFacing
 import net.minecraft.util.text.ITextComponent
 import net.minecraft.world.IInteractionObject
-import net.minecraftforge.common.capabilities.Capability
-import net.minecraftforge.common.capabilities.ICapabilityProvider
-import net.minecraftforge.common.util.LazyOptional
-import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.ItemStackHandler
 
-class RoomHolderTileEntity : TileEntityBase(RoomHolderTileType), ICapabilityProvider, IInteractionObject {
+class RoomHolderTileEntity : TileEntityBase(RoomHolderTileType), IInteractionObject {
     val itemHandler: ItemStackHandler = object : ItemStackHandler(1) {
         override fun onContentsChanged(slot: Int) {
             super.onContentsChanged(slot)
@@ -67,14 +62,6 @@ class RoomHolderTileEntity : TileEntityBase(RoomHolderTileType), ICapabilityProv
         compound.put(ITEM_HANDLER_TAG, this.itemHandler.serializeNBT())
 
         return super.write(compound)
-    }
-
-    override fun <T : Any?> getCapability(cap: Capability<T>, side: EnumFacing?): LazyOptional<T> {
-        if(cap === CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            return LazyOptional.of { this.itemHandler as T }
-        }
-
-        return LazyOptional.empty()
     }
 
     override fun onDataPacket(net: NetworkManager, pkt: SPacketUpdateTileEntity) {
