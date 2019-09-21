@@ -2,9 +2,10 @@ package net.alexwells.roomery.proxy
 
 import net.alexwells.roomery.Registry
 import net.minecraft.block.Block
+import net.minecraft.inventory.container.ContainerType
 import net.minecraft.item.Item
-import net.minecraftforge.event.RegistryEvent
 import net.minecraft.tileentity.TileEntityType
+import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.eventbus.api.SubscribeEvent
 
 abstract class CommonProxy {
@@ -21,5 +22,10 @@ abstract class CommonProxy {
     @SubscribeEvent
     fun registerItems(event: RegistryEvent.Register<Item>) {
         Registry.items.forEach { event.registry.register(it) }
+    }
+
+    @SubscribeEvent
+    fun registerContainers(event: RegistryEvent.Register<ContainerType<*>>) {
+        Registry.containers.forEach { event.registry.register(it) }
     }
 }

@@ -1,28 +1,28 @@
 modLoader="kotlinfml"
 loaderVersion="[1,)"
-issueTrackerURL="https://github.com/autaut03/roomery/issues"
-displayURL="https://github.com/autaut03/roomery"
-logoFile="examplemod.png"
-credits="MCP, FML, Forge guys; CompactMachines3 mod"
-authors="Alex_Wells (autaut03)"
 
 [[mods]]
     modId="roomery"
-    version="${file.jarVersion}"
+    version="${file.jarVersion}" # todo: does this even work?
     displayName="Roomery"
-    updateJSONURL="https://raw.githubusercontent.com/autaut03/roomery/master/update.json"
     description="Create whole rooms inside a single block"
+    logoFile="examplemod.png"
+    credits="MCP, FML, Forge guys; CompactMachines3 mod"
+    authors="Alex_Wells (autaut03)"
+    displayURL="https://github.com/autaut03/roomery"
+    issueTrackerURL="https://github.com/autaut03/roomery/issues"
+    updateJSONURL="https://raw.githubusercontent.com/autaut03/roomery/master/update.json"
 
 [[dependencies.roomery]]
     modId="forge"
     mandatory=true
-    versionRange="[25,)"
+    versionRange="[28,)"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.roomery]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.13.2,)"
+    versionRange="[1.14.4,)"
     ordering="NONE"
     side="BOTH"

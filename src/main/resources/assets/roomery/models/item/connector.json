@@ -1,0 +1,6 @@
+{
+  "parent": "roomery:block/connector",
+  "display": {
+    "thirdperson": {}
+  }
+}

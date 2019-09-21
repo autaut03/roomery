@@ -1,25 +1,21 @@
 package net.alexwells.roomery.proxy
 
-import net.alexwells.roomery.gui.GuiHandler
-import net.alexwells.roomery.mechanic.roomholder.*
-import net.alexwells.roomery.util.getTile
-import net.minecraft.client.Minecraft
-import net.minecraft.client.gui.GuiScreen
-import net.minecraft.inventory.Container
-import net.minecraft.network.PacketBuffer
-import net.minecraft.tileentity.TileEntity
-import net.minecraft.util.math.BlockPos
-import net.minecraft.world.IInteractionObject
-import net.minecraftforge.fml.ExtensionPoint
-import net.minecraftforge.fml.ModLoadingContext
-import net.minecraftforge.fml.network.FMLPlayMessages
-import java.lang.RuntimeException
-import java.util.function.Function
+import net.alexwells.roomery.mechanic.connector.ConnectorContainerType
+import net.alexwells.roomery.mechanic.connector.ConnectorScreen
+import net.alexwells.roomery.mechanic.roomholder.RoomHolderContainerType
+import net.alexwells.roomery.mechanic.roomholder.RoomHolderScreen
+import net.minecraft.client.gui.ScreenManager
+import net.minecraftforge.eventbus.api.SubscribeEvent
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent
 
 class ClientProxy : CommonProxy() {
-    init {
-        ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.GUIFACTORY) {
-            Function { packet -> GuiHandler.handleGui(packet)  }
+    @SubscribeEvent
+    fun setup(event: FMLCommonSetupEvent) {
+        ScreenManager.registerFactory(RoomHolderContainerType) { container, playerInventory, title ->
+            RoomHolderScreen(container, playerInventory, title)
+        }
+        ScreenManager.registerFactory(ConnectorContainerType) { container, playerInventory, title ->
+            ConnectorScreen(container, playerInventory, title)
         }
     }
 }

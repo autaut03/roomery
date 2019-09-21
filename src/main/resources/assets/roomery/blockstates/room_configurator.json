@@ -1,7 +1,7 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "roomery:room_configurator"
+    "model": "roomery:block/room_configurator"
   },
   "variants": {
     "facing": {
