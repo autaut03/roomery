@@ -8,6 +8,7 @@ import net.alexwells.roomery.proxy.CommonProxy
 import net.alexwells.roomery.proxy.ServerProxy
 import net.minecraft.item.ItemGroup
 import net.minecraft.item.ItemStack
+import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.fml.DistExecutor
 import net.minecraftforge.fml.common.Mod
 
@@ -26,5 +27,6 @@ object Roomery {
 
     init {
         FMLKotlinModLoadingContext.get().modEventBus.register(proxy)
+        MinecraftForge.EVENT_BUS.register(proxy)
     }
 }

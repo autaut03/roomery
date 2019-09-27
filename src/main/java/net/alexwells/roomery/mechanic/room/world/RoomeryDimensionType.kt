@@ -9,7 +9,7 @@ import net.minecraftforge.common.ModDimension
 
 object RoomeryDimensionType : ModDimension() {
     init {
-        registryName = createResource("roomery")
+        registryName = ROOMERY_DIMENSION_RESOURCE
     }
 
     val type: DimensionType

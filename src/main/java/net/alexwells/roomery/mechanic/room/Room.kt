@@ -1,34 +1,78 @@
 package net.alexwells.roomery.mechanic.room
 
-import net.alexwells.roomery.MOD_ID
 import net.alexwells.roomery.common.SideEnum
+import net.alexwells.roomery.mechanic.connector.ConnectorTileEntity
 import net.alexwells.roomery.mechanic.roomholder.RoomHolderBlock
 import net.alexwells.roomery.mechanic.roomholder.RoomHolderTileEntity
 import net.minecraft.nbt.CompoundNBT
+import net.minecraft.util.Direction
 import net.minecraft.world.storage.WorldSavedData
+import net.minecraftforge.api.distmarker.Dist
+import net.minecraftforge.api.distmarker.OnlyIn
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.util.LazyOptional
 
-class Room(private val id: String) : WorldSavedData(MOD_ID + "_rooms_" + id) {
+class Room(private val id: String, name: String) : WorldSavedData(name) {
     private var holder: RoomHolderTileEntity? = null
+    private val connectors: MutableMap<SideEnum, ConnectorTileEntity> = HashMap()
 
-    fun <T> getOutsideCapability(cap: Capability<T>, side: SideEnum): LazyOptional<T> {
-        return holder!!.getCapability(
-            cap,
-            side.facingRelativeTo(holder!!.blockState.get(RoomHolderBlock.Properties.FACING))
-        )
+    /**
+     * If a new holder appears, it won't work. The other one needs to be unloaded first.
+     */
+    fun setHolder(holder: RoomHolderTileEntity?) {
+        if (this.holder != null) {
+            return
+        }
+
+        this.holder = holder
     }
 
-    fun <T> getInsideCapability(cap: Capability<T>, side: SideEnum): LazyOptional<T> {
-        // todo
-        return LazyOptional.empty()
+    /**
+     * Notify a room about new loaded connector.
+     */
+    fun addConnector(connector: ConnectorTileEntity) {
+        connectors[connector.side] = connector
+    }
+
+    /**
+     * Notify a room about the removal of previously loaded connector.
+     */
+    fun removeConnector(connector: ConnectorTileEntity) {
+        connectors.remove(connector.side)
+    }
+
+    /**
+     * Get a capability instance from inside to outside (from a connector inside the room to a room holder outside).
+     */
+    fun <T> getHolderCapability(cap: Capability<T>, direction: Direction?): LazyOptional<T> {
+        // If for some reason there's not a single holder for this room
+        // (say holder was destroyed, but a chunk didn't unload yet),
+        // then we'll say that there are no capabilities anymore.
+        if (holder == null) {
+            return LazyOptional.empty()
+        }
+
+        return holder!!.getOutCapability(cap, direction)
+    }
+
+    /**
+     * Get a capability instance from outside to inside (from a room holder outside to a connector inside the room).
+     */
+    fun <T: Any?> getConnectorCapability(cap: Capability<T>, direction: Direction?, holderDirection: Direction): LazyOptional<T> {
+        val side = if (direction != null) SideEnum.fromDirection(direction, holderDirection) else SideEnum.FRONT
+
+        // Can be optimized.
+        if (!connectors.contains(side)) {
+            return LazyOptional.empty()
+        }
+
+        return connectors[side]!!.getOutCapability(cap, direction)
     }
 
     override fun read(nbt: CompoundNBT) {
     }
 
     override fun write(nbt: CompoundNBT): CompoundNBT {
-
         return nbt
     }
 }

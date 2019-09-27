@@ -2,5 +2,8 @@
   "forge_marker": 1,
   "defaults": {
     "model": "roomery:block/connector"
+  },
+  "variants": {
+    "": [{}]
   }
 }

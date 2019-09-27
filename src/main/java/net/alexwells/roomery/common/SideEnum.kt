@@ -1,6 +1,5 @@
 package net.alexwells.roomery.common
 
-import java.lang.RuntimeException
 import net.minecraft.util.Direction
 import net.minecraft.util.IStringSerializable
 
@@ -14,13 +13,18 @@ enum class SideEnum(private val namel: String) : IStringSerializable {
 
     override fun getName(): String = namel
 
-    fun facingRelativeTo(facing: Direction): Direction {
-        return when (this) {
-            FRONT -> facing
-            BACK -> facing.opposite
-            LEFT -> facing.rotateY().opposite
-            RIGHT -> facing.rotateY()
-            else -> throw RuntimeException("Can not calculate facingRelative to given facing pointing $facing")
+    companion object {
+        fun fromDirection(direction: Direction, sideableDirection: Direction): SideEnum {
+            return when (direction) {
+                Direction.UP -> TOP
+                Direction.DOWN -> BOTTOM
+                else -> when(sideableDirection) {
+                    direction -> FRONT
+                    direction.opposite -> BACK
+                    direction.rotateYCCW() -> LEFT
+                    else -> RIGHT
+                }
+            }
         }
     }
 }

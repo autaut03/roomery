@@ -6,7 +6,6 @@ import net.minecraft.util.text.ITextComponent
 import net.minecraftforge.api.distmarker.Dist
 import net.minecraftforge.api.distmarker.OnlyIn
 
-@OnlyIn(Dist.CLIENT)
 class RoomHolderScreen(
     container: RoomHolderContainer,
     playerInventory: PlayerInventory,
