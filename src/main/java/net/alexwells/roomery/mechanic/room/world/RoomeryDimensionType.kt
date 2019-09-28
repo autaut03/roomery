@@ -1,7 +1,6 @@
 package net.alexwells.roomery.mechanic.room.world
 
 import java.util.function.BiFunction
-import net.alexwells.roomery.util.createResource
 import net.minecraft.world.World
 import net.minecraft.world.dimension.Dimension
 import net.minecraft.world.dimension.DimensionType

@@ -1,6 +1,6 @@
 package net.alexwells.roomery.mechanic.room
 
-import net.alexwells.roomery.mechanic.room.world.RoomeryDimensionType
+import net.minecraft.world.dimension.DimensionType
 import net.minecraftforge.fml.server.ServerLifecycleHooks
 
 object RoomManager {
@@ -17,5 +17,5 @@ object RoomManager {
     }
 
     private fun nameForId(id: String): String = "room_$id"
-    private fun storage() = ServerLifecycleHooks.getCurrentServer().getWorld(RoomeryDimensionType.type).savedData
+    private fun storage() = ServerLifecycleHooks.getCurrentServer().getWorld(DimensionType.OVERWORLD).savedData
 }

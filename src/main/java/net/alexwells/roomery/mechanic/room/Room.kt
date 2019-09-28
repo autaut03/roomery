@@ -7,8 +7,6 @@ import net.alexwells.roomery.mechanic.roomholder.RoomHolderTileEntity
 import net.minecraft.nbt.CompoundNBT
 import net.minecraft.util.Direction
 import net.minecraft.world.storage.WorldSavedData
-import net.minecraftforge.api.distmarker.Dist
-import net.minecraftforge.api.distmarker.OnlyIn
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.util.LazyOptional
 
@@ -44,7 +42,7 @@ class Room(private val id: String, name: String) : WorldSavedData(name) {
     /**
      * Get a capability instance from inside to outside (from a connector inside the room to a room holder outside).
      */
-    fun <T> getHolderCapability(cap: Capability<T>, direction: Direction?): LazyOptional<T> {
+    fun <T> getHolderCapability(cap: Capability<T>, side: SideEnum): LazyOptional<T> {
         // If for some reason there's not a single holder for this room
         // (say holder was destroyed, but a chunk didn't unload yet),
         // then we'll say that there are no capabilities anymore.
@@ -52,21 +50,27 @@ class Room(private val id: String, name: String) : WorldSavedData(name) {
             return LazyOptional.empty()
         }
 
+        val direction = side.toDirection(getHolderDirection())
+
         return holder!!.getOutCapability(cap, direction)
     }
 
     /**
      * Get a capability instance from outside to inside (from a room holder outside to a connector inside the room).
      */
-    fun <T: Any?> getConnectorCapability(cap: Capability<T>, direction: Direction?, holderDirection: Direction): LazyOptional<T> {
-        val side = if (direction != null) SideEnum.fromDirection(direction, holderDirection) else SideEnum.FRONT
+    fun <T : Any?> getConnectorCapability(cap: Capability<T>, direction: Direction?): LazyOptional<T> {
+        val side = if (direction != null) SideEnum.fromDirection(direction, getHolderDirection()) else SideEnum.FRONT
 
         // Can be optimized.
         if (!connectors.contains(side)) {
             return LazyOptional.empty()
         }
 
-        return connectors[side]!!.getOutCapability(cap, direction)
+        return connectors[side]!!.getOutCapability(cap)
+    }
+
+    private fun getHolderDirection(): Direction {
+        return holder!!.blockState.get(RoomHolderBlock.Properties.FACING)
     }
 
     override fun read(nbt: CompoundNBT) {

@@ -10,6 +10,7 @@ import net.minecraft.inventory.container.INamedContainerProvider
 import net.minecraft.nbt.CompoundNBT
 import net.minecraft.util.Direction
 import net.minecraft.util.text.ITextComponent
+import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.capabilities.ICapabilityProvider
 import net.minecraftforge.common.util.LazyOptional
@@ -18,29 +19,32 @@ class ConnectorTileEntity : TileEntityBase(ConnectorTileType), INamedContainerPr
     var side: SideEnum = SideEnum.FRONT
         private set
 
-    init {
+    override fun setWorld(world: World) {
+        super.setWorld(world)
+
         getRoom()?.addConnector(this)
     }
 
-    fun <T: Any?> getOutCapability(cap: Capability<T>, direction: Direction?): LazyOptional<T> {
-        if (world!!.isRemote || direction == null) {
+    fun <T : Any?> getOutCapability(cap: Capability<T>): LazyOptional<T> {
+        if (world!!.isRemote) {
             return LazyOptional.empty()
         }
 
-        val insetPos = pos.offset(direction)
+        val facing = blockState.get(ConnectorBlock.Properties.FACING)
+        val insetPos = pos.offset(facing)
         val tile = world!!.getTileEntity(insetPos)
 
         if (tile !is ICapabilityProvider) {
             return LazyOptional.empty()
         }
 
-        return tile.getCapability(cap, direction.opposite)
+        return tile.getCapability(cap, facing.opposite)
     }
 
     override fun <T : Any?> getCapability(cap: Capability<T>, direction: Direction?): LazyOptional<T> {
         val room = getRoom() ?: return LazyOptional.empty()
 
-        return room.getHolderCapability(cap, direction)
+        return room.getHolderCapability(cap, side)
     }
 
     override fun read(compound: CompoundNBT) {

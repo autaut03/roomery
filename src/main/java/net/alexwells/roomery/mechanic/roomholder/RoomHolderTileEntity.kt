@@ -13,6 +13,7 @@ import net.minecraft.network.NetworkManager
 import net.minecraft.network.play.server.SUpdateTileEntityPacket
 import net.minecraft.util.Direction
 import net.minecraft.util.text.ITextComponent
+import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.capabilities.ICapabilityProvider
 import net.minecraftforge.common.util.LazyOptional
@@ -26,7 +27,7 @@ class RoomHolderTileEntity : TileEntityBase(RoomHolderTileType), INamedContainer
             updateWithRoomManager()
             world!!.setBlockState(pos, world!!.getBlockState(pos).with(RoomHolderBlock.Properties.ACTIVE, isActive()))
 
-           /* if (slot == ROOM_CARD_SLOT) {
+            /*if (slot == ROOM_CARD_SLOT) {
                 // Here we should tell the client that this block has changed in some way
                 // client will receive this and update block state.
                 sendUpdatePacket()
@@ -53,7 +54,15 @@ class RoomHolderTileEntity : TileEntityBase(RoomHolderTileType), INamedContainer
     val roomCard: ItemStack?
         get() = itemHandler.getStackInSlot(ROOM_CARD_SLOT)
 
-    private fun getRoom(): Room? {
+    var room: Room? = null
+
+    override fun setWorld(world: World) {
+        super.setWorld(world)
+
+        updateWithRoomManager()
+    }
+
+    private fun findRoom(): Room? {
         if (world == null || world!!.isRemote) {
             return null
         }
@@ -102,21 +111,23 @@ class RoomHolderTileEntity : TileEntityBase(RoomHolderTileType), INamedContainer
             return
         }
 
-        val room = getRoom() ?: return
-
         // First of all, check if this was called after the entity was removed.
         // In that case we'll also notify the Room instance of this.
-        if (removed) {
-            room.setHolder(null)
+        if (removed && this.room != null) {
+            this.room!!.setHolder(null)
+            this.room = null
 
             return
         }
 
+        val room = findRoom() ?: return
+
         // Notify the Room about new holder (assuming it won't do any harm if the same instance was provided).
+        this.room = room
         room.setHolder(this)
     }
 
-    fun <T: Any?> getOutCapability(cap: Capability<T>, direction: Direction?): LazyOptional<T> {
+    fun <T : Any?> getOutCapability(cap: Capability<T>, direction: Direction?): LazyOptional<T> {
         if (world == null || world!!.isRemote || direction == null) {
             return LazyOptional.empty()
         }
@@ -132,9 +143,9 @@ class RoomHolderTileEntity : TileEntityBase(RoomHolderTileType), INamedContainer
     }
 
     override fun <T : Any?> getCapability(cap: Capability<T>, direction: Direction?): LazyOptional<T> {
-        val room = getRoom() ?: return LazyOptional.empty()
+        val room = findRoom() ?: return LazyOptional.empty()
 
-        return room.getConnectorCapability(cap, direction, blockState.get(RoomHolderBlock.Properties.FACING))
+        return room.getConnectorCapability(cap, direction)
     }
 
     /**
