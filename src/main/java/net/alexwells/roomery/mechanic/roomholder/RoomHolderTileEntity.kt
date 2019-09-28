@@ -1,5 +1,6 @@
 package net.alexwells.roomery.mechanic.roomholder
 
+import net.alexwells.roomery.common.SideEnum
 import net.alexwells.roomery.common.TileEntityBase
 import net.alexwells.roomery.mechanic.room.Room
 import net.alexwells.roomery.mechanic.room.RoomManager
@@ -17,6 +18,7 @@ import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.capabilities.ICapabilityProvider
 import net.minecraftforge.common.util.LazyOptional
+import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.ItemStackHandler
 
 class RoomHolderTileEntity : TileEntityBase(RoomHolderTileType), INamedContainerProvider, ICapabilityProvider {
@@ -143,9 +145,26 @@ class RoomHolderTileEntity : TileEntityBase(RoomHolderTileType), INamedContainer
     }
 
     override fun <T : Any?> getCapability(cap: Capability<T>, direction: Direction?): LazyOptional<T> {
+        val side = getSide(direction)
+
+        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && side == SideEnum.FRONT) {
+            return LazyOptional.of { itemHandler as T }
+        }
+
         val room = findRoom() ?: return LazyOptional.empty()
 
-        return room.getConnectorCapability(cap, direction)
+        return room.getConnectorCapability(cap, side)
+    }
+
+    fun getDirection(): Direction {
+        return this.blockState.get(RoomHolderBlock.Properties.FACING)
+    }
+
+    fun getSide(direction: Direction?): SideEnum {
+        return if (direction != null)
+            SideEnum.fromDirection(direction, getDirection())
+        else
+            SideEnum.FRONT
     }
 
     /**

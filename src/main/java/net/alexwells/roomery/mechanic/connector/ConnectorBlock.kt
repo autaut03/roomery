@@ -5,6 +5,7 @@ import net.minecraft.block.BlockState
 import net.minecraft.block.SoundType
 import net.minecraft.block.material.Material
 import net.minecraft.item.BlockItemUseContext
+import net.minecraft.state.BooleanProperty
 import net.minecraft.state.DirectionProperty
 import net.minecraft.state.StateContainer
 import net.minecraft.state.properties.BlockStateProperties
@@ -25,18 +26,20 @@ object ConnectorBlock : Block(
     // ends what it does.
     object Properties {
         val FACING: DirectionProperty = BlockStateProperties.FACING
+        val ACTIVE: BooleanProperty = BooleanProperty.create("active")
     }
 
     init {
         registryName = CONNECTOR_RESOURCE
         defaultState = stateContainer.baseState
             .with(Properties.FACING, Direction.NORTH)
+            .with(Properties.ACTIVE, false)
     }
 
     override fun fillStateContainer(builder: StateContainer.Builder<Block, BlockState>) {
         super.fillStateContainer(builder)
 
-        builder.add(Properties.FACING)
+        builder.add(Properties.FACING, Properties.ACTIVE)
     }
 
     override fun getStateForPlacement(context: BlockItemUseContext): BlockState? {

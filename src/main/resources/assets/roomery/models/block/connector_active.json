@@ -1,0 +1,6 @@
+{
+  "parent": "roomery:block/connector",
+  "textures": {
+    "back": "roomery:block/connector_back_active"
+  }
+}

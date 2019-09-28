@@ -50,7 +50,7 @@ class Room(private val id: String, name: String) : WorldSavedData(name) {
             return LazyOptional.empty()
         }
 
-        val direction = side.toDirection(getHolderDirection())
+        val direction = side.toDirection(holder!!.getDirection())
 
         return holder!!.getOutCapability(cap, direction)
     }
@@ -58,19 +58,13 @@ class Room(private val id: String, name: String) : WorldSavedData(name) {
     /**
      * Get a capability instance from outside to inside (from a room holder outside to a connector inside the room).
      */
-    fun <T : Any?> getConnectorCapability(cap: Capability<T>, direction: Direction?): LazyOptional<T> {
-        val side = if (direction != null) SideEnum.fromDirection(direction, getHolderDirection()) else SideEnum.FRONT
-
+    fun <T : Any?> getConnectorCapability(cap: Capability<T>, side: SideEnum): LazyOptional<T> {
         // Can be optimized.
         if (!connectors.contains(side)) {
             return LazyOptional.empty()
         }
 
         return connectors[side]!!.getOutCapability(cap)
-    }
-
-    private fun getHolderDirection(): Direction {
-        return holder!!.blockState.get(RoomHolderBlock.Properties.FACING)
     }
 
     override fun read(nbt: CompoundNBT) {
